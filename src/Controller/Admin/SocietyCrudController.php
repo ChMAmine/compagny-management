@@ -43,17 +43,17 @@ class SocietyCrudController extends AbstractCrudController
                 ->setFormTypeOptions([
                     'by_reference' => false,
                 ])
+               /* ->setFormTypeOption(
+                    'query_builder', function (AddressRepository  $addressRepository){
+                    return $addressRepository->createQueryBuilder('a')
+                        ->andWhere('a.society is NULL');
+                })*/
                 ->formatValue(function ($value, $entity) {
                     $str = $entity->getAddresses()[0];
                     for ($i = 1; $i < $entity->getAddresses()->count(); $i++) {
                         $str = $str . ", " . $entity->getAddresses()[$i];
                     }
                     return $str;
-                })
-                ->setFormTypeOption(
-                    'query_builder', function (AddressRepository  $addressRepository){
-                    return $addressRepository->createQueryBuilder('a')
-                        ->andWhere('a.society is NULL');
                 }),
             AssociationField::new('legalForm'),
             DateTimeField::new('updatedAt'),

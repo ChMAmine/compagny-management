@@ -44,7 +44,7 @@ class Address
 
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="addresses")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $society;
 
