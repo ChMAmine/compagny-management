@@ -45,19 +45,20 @@ class Society
     private $capital;
 
     /**
-     * @ORM\OneToMany(targetEntity=Address::class, mappedBy="society")
+     * @ORM\Column(type="datetime")
      */
-    private $addresses;
+    private $updatedAt;
 
     /**
-     * @ORM\OneToOne(targetEntity=LegalForm::class, mappedBy="society", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=LegalForm::class, inversedBy="societies")
      */
     private $legalForm;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\OneToMany(targetEntity=Address::class, mappedBy="society")
      */
-    private $updatedAt;
+    private $addresses;
+
 
     public function __construct()
     {
@@ -129,6 +130,30 @@ class Society
         return $this;
     }
 
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getLegalForm(): ?LegalForm
+    {
+        return $this->legalForm;
+    }
+
+    public function setLegalForm(?LegalForm $legalForm): self
+    {
+        $this->legalForm = $legalForm;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Address[]
      */
@@ -155,35 +180,6 @@ class Society
                 $address->setSociety(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getLegalForm(): ?LegalForm
-    {
-        return $this->legalForm;
-    }
-
-    public function setLegalForm(LegalForm $legalForm): self
-    {
-        // set the owning side of the relation if necessary
-        if ($legalForm->getSociety() !== $this) {
-            $legalForm->setSociety($this);
-        }
-
-        $this->legalForm = $legalForm;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }

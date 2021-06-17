@@ -29,7 +29,9 @@ class SocietyCrudController extends AbstractCrudController
             TextField::new('city_of_registration'),
             DateField::new('registration'),
             MoneyField::new('capital')->setCurrency('EUR'),
-            AssociationField::new('addresses'),
+            AssociationField::new('addresses')->setFormTypeOptions([
+                'by_reference' => false,
+            ]),
             AssociationField::new('legalForm'),
             DateTimeField::new('updatedAt'),
         ];

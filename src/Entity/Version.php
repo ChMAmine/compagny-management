@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\VersionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ArchiveRepository::class)
+ * @ORM\Entity(repositoryClass=VersionRepository::class)
  */
-class Archive
+class Version
 {
     /**
      * @ORM\Id
@@ -49,14 +49,15 @@ class Archive
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Address::class, mappedBy="archive")
+     * @ORM\ManyToOne(targetEntity=LegalForm::class, inversedBy="version")
+     */
+    private $legalForm;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Address::class, mappedBy="version")
      */
     private $addresses;
 
-    /**
-     * @ORM\OneToOne(targetEntity=LegalForm::class, mappedBy="relation", cascade={"persist", "remove"})
-     */
-    private $legalForm;
 
     public function __construct()
     {
@@ -140,6 +141,17 @@ class Archive
         return $this;
     }
 
+    public function getLegalForm(): ?LegalForm
+    {
+        return $this->legalForm;
+    }
+
+    public function setLegalForm(?LegalForm $legalForm): self
+    {
+        $this->legalForm = $legalForm;
+
+        return $this;
+    }
     /**
      * @return Collection|Address[]
      */
@@ -152,7 +164,7 @@ class Archive
     {
         if (!$this->addresses->contains($address)) {
             $this->addresses[] = $address;
-            $address->setArchive($this);
+            $address->setVersion($this);
         }
 
         return $this;
@@ -162,27 +174,10 @@ class Archive
     {
         if ($this->addresses->removeElement($address)) {
             // set the owning side to null (unless already changed)
-            if ($address->getArchive() === $this) {
-                $address->setArchive(null);
+            if ($address->getVersion() === $this) {
+                $address->setVersion(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getLegalForm(): ?LegalForm
-    {
-        return $this->legalForm;
-    }
-
-    public function setLegalForm(LegalForm $legalForm): self
-    {
-        // set the owning side of the relation if necessary
-        if ($legalForm->getRelation() !== $this) {
-            $legalForm->setRelation($this);
-        }
-
-        $this->legalForm = $legalForm;
 
         return $this;
     }

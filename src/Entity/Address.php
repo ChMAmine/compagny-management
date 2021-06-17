@@ -49,15 +49,16 @@ class Address
     private $society;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Archive::class, inversedBy="addresses")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\ManyToOne(targetEntity=Version::class)
      */
-    private $archive;
+    private $version;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
 
     public function getNumber(): ?int
     {
@@ -119,6 +120,10 @@ class Address
         return $this;
     }
 
+    public function __toString(){
+        return $this->number . ' ' . $this->channel_type . ' ' . $this->name . ' ' . $this->postal_code;
+    }
+
     public function getSociety(): ?Society
     {
         return $this->society;
@@ -131,19 +136,15 @@ class Address
         return $this;
     }
 
-    public function getArchive(): ?Archive
+    public function getVersion(): ?Version
     {
-        return $this->archive;
+        return $this->version;
     }
 
-    public function setArchive(?Archive $archive): self
+    public function setVersion(?Version $version): self
     {
-        $this->archive = $archive;
+        $this->version = $version;
 
         return $this;
-    }
-
-    public function __toString(){
-        return $this->number . ' ' . $this->channel_type . ' ' . $this->name . ' ' . $this->postal_code;
     }
 }
