@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ version.id }}</td>
-            </tr>
-            <tr>
                 <th>Name</th>
                 <td>{{ version.name }}</td>
             </tr>
@@ -34,6 +30,18 @@
             <tr>
                 <th>UpdatedAt</th>
                 <td>{{ version.updatedAt ? version.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>forme juridique</th>
+                <td>{{ version.legalForm ? version.legalForm.name : '' }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>
+                    {% for address in version.addresses %}
+                        {{ address.number ~ ' ' ~ address.channelType ~ ' ' ~ address.name ~ ' ' ~ address.postalCode ~ ', ' }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

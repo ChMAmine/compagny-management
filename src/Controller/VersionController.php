@@ -50,6 +50,8 @@ class VersionController extends AbstractController
 
     /**
      * @Route("/{id}", name="version_show", methods={"GET"})
+     * @param Version $version
+     * @return Response
      */
     public function show(Version $version): Response
     {

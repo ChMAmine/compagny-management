@@ -15,6 +15,7 @@
             <th>Registration</th>
             <th>Capital</th>
             <th>UpdatedAt</th>
+            <th>actions</th>
         </tr>
         </thead>
         <tbody>
@@ -27,6 +28,10 @@
                 <td>{{ version.registration ? version.registration|date('Y-m-d') : '' }}</td>
                 <td>{{ version.capital }}</td>
                 <td>{{ version.updatedAt ? version.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('version_show', {'id': version.id}) }}">show</a>
+                    <a href="{{ path('version_edit', {'id': version.id}) }}">edit</a>
+                </td>
             </tr>
         {% else %}
             <tr>

@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\Address;
 use App\Entity\Society;
 use App\Entity\Version;
 use App\Repository\ArchiveRepository;
@@ -20,9 +21,6 @@ class DatabaseActivity
             return;
         }
 
-        $version = $args->getObjectManager()->getRepository(Version::class)->findById($entity->getId());
-
-        if(empty($version)){
             $version = new Version();
             $version->setName($entity->getName());
             $version->setCapital($entity->getCapital());
@@ -32,10 +30,14 @@ class DatabaseActivity
             $version->setCapital($entity->getCapital());
             $version->setSirenNumber($entity->getSirenNumber());
             $version->setUpdatedAt($entity->getUpdatedAt());
-        }
 
-        $args->getObjectManager()->persist($version);
-        $args->getObjectManager()->flush();
+            $args->getObjectManager()->persist($version);
+            $args->getObjectManager()->flush();
+            foreach ($entity->getAddresses() as $address){
+                $address->setVersion($version);
+                $args->getObjectManager()->persist($address);
+            }
+            $args->getObjectManager()->flush();
 
     }
 }

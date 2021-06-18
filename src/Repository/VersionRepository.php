@@ -9,7 +9,6 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @method Version|null find($id, $lockMode = null, $lockVersion = null)
  * @method Version|null findOneBy(array $criteria, array $orderBy = null)
- * @method Version[]    findAll()
  * @method Version[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class VersionRepository extends ServiceEntityRepository
@@ -17,6 +16,11 @@ class VersionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Version::class);
+    }
+
+    public function findAll(): array
+    {
+        return $this->findBy(array(), array('updatedAt' => 'DESC'));
     }
 
     // /**
