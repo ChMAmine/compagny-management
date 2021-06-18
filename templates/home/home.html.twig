@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Name</th>
             <th>SirenNumber</th>
             <th>CityOfRegistration</th>
@@ -21,7 +20,6 @@
         <tbody>
         {% for version in versions %}
             <tr>
-                <td>{{ version.id }}</td>
                 <td>{{ version.name }}</td>
                 <td>{{ version.sirenNumber }}</td>
                 <td>{{ version.cityOfRegistration }}</td>
@@ -30,7 +28,6 @@
                 <td>{{ version.updatedAt ? version.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('version_show', {'id': version.id}) }}">show</a>
-                    <a href="{{ path('version_edit', {'id': version.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
