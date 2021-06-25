@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\SocietyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SocietyRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Society
 {
@@ -58,6 +60,8 @@ class Society
      * @ORM\OneToMany(targetEntity=Address::class, mappedBy="society")
      */
     private $addresses;
+
+    private $changed;
 
 
     public function __construct()
@@ -180,6 +184,30 @@ class Society
                 $address->setSociety(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     * @param PreUpdateEventArgs $event
+     */
+    public function preUpdate(PreUpdateEventArgs $event)
+    {
+        $this->setChanged(false);
+        if ($event->hasChangedField('updatedAt')){
+            $this->setChanged(true);
+        }
+    }
+
+    public function getChanged(): ?bool
+    {
+        return $this->changed;
+    }
+
+    public function setChanged(bool $changed): self
+    {
+        $this->changed = $changed;
 
         return $this;
     }

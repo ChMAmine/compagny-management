@@ -6,6 +6,7 @@ use App\Entity\Address;
 use App\Entity\Society;
 use App\Entity\Version;
 use App\Repository\ArchiveRepository;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class DatabaseActivity
@@ -20,7 +21,7 @@ class DatabaseActivity
 
             return;
         }
-
+      //  if ($entity->getChanged()) {
             $version = new Version();
             $version->setName($entity->getName());
             $version->setCapital($entity->getCapital());
@@ -33,11 +34,12 @@ class DatabaseActivity
 
             $args->getObjectManager()->persist($version);
             $args->getObjectManager()->flush();
-            foreach ($entity->getAddresses() as $address){
+            foreach ($entity->getAddresses() as $address) {
                 $address->setVersion($version);
                 $args->getObjectManager()->persist($address);
             }
             $args->getObjectManager()->flush();
+      //  }
 
     }
 }
